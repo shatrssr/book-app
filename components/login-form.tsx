@@ -26,6 +26,7 @@ export function LoginForm({
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  /**
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const supabase = createClient();
@@ -39,12 +40,46 @@ export function LoginForm({
       });
       if (error) throw error;
       // Update this route to redirect to an authenticated route. The user already has an active session.
-      router.push("/protected");
+      setTimeout(() => {
+        router.push("/protected");
+        router.refresh();
+      }, 500);
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
       setIsLoading(false);
     }
+  };
+  */
+  const handleLogin = async (e: React.forev) => {
+  e.preventDefault();
+  const supabase = createClient();
+  setIsLoading(true);
+  setError(null);
+
+  try {
+    console.log("1. ログイン開始");
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
+    
+    console.log("2. ログイン成功");
+    setTimeout(() => {
+      console.log("3. setTimeout実行 - ページ遷移開始");
+      router.push("/protected");
+      console.log("4. router.push実行");
+      router.refresh();
+      console.log("5. router.refresh実行");
+    }, 500);
+    
+  } catch (error: unknown) {
+    console.log("エラー発生:", error);
+    setError(error instanceof Error ? error.message : "An error occurred");
+  } finally {
+    setIsLoading(false);
+  }
   };
 
   return (
