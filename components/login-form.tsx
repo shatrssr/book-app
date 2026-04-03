@@ -51,7 +51,7 @@ export function LoginForm({
     }
   };
   */
-  const handleLogin = async (e: React.forev) => {
+  const handleLogin = async (e: React.SyntheticEvent<HTMLFormElement>) => {
   e.preventDefault();
   const supabase = createClient();
   setIsLoading(true);
